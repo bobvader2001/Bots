@@ -34,7 +34,7 @@ async def playSound(track, user):
 	if(channel is not None):
 		try:
 			voice = await client.join_voice_channel(channel)
-			player = voice.create_ffmpeg_player('C:\\Users\\Matthew\\Documents\\Discord Bots\\Sheev Bot\\SFX\\' + track + '.mp3')
+			player = voice.create_ffmpeg_player('SFX/' + track + '.mp3')
 			player.start()
 			while True:
 				if player.is_done():
@@ -95,7 +95,7 @@ async def stfu(ctx, user):
 #Send Sheev Face
 @client.command(pass_context=True)
 async def face(ctx):
-	return await client.send_file(ctx.message.channel, 'C:\\Users\\Matthew\\Documents\\Discord Bots\\Sheev Bot\\SheevFace.jpg')
+	return await client.send_file(ctx.message.channel, 'SheevFace.jpg')
 	print('Displayed a glorious picture of The Senate')
 
 #Ideal GF
@@ -104,12 +104,13 @@ async def idealgf(ctx):
 	try:
 		channel = ctx.message.channel
 		phrases = []
-		path = 'C:\\Users\\Matthew\\Documents\\Discord Bots\\Sheev Bot\\IdealGF.png'
+		path = 'IdealGF.png'
 		im = Image.open(path).convert('RGBA')
 		size = width, height = im.size
 		draw = ImageDraw.Draw(im, 'RGBA')
 		font = ImageFont.truetype('arial.ttf', 25)
 		titlefont = ImageFont.truetype('arial.ttf', 50)
+		positions = ((200,100), (30,200), (400,400), (50,450), (150,525), (100,10))
 
 		async for oldmessage in client.logs_from(channel, limit=1000):
 				if oldmessage.author is ctx.message.author and not oldmessage.content.startswith('!') and not '@' in oldmessage.content and len(oldmessage.content) < 25:
@@ -127,15 +128,14 @@ async def idealgf(ctx):
 			else:
 				continue
 
-		draw.text((200, 100), '"' + selected_phrases[0] + '"', (0, 0, 0, 255), font = font)
-		draw.text((30, 200), '"' + selected_phrases[1] + '"', (0, 0, 0, 255), font = font)
-		draw.text((400, 400), '"' + selected_phrases[2] + '"', (0, 0, 0, 255), font = font)
-		draw.text((50, 450), '"' + selected_phrases[3] + '"', (0, 0, 0, 255), font = font)
-		draw.text((150, 525), '"' + selected_phrases[4] + '"', (0, 0, 0, 255), font = font)
 		draw.text((100, 10), ctx.message.author.name + ' GF', (0, 0, 0, 255), font = titlefont)
+		counter = 0
+		while(counter < 5):
+			draw.text(positions[counter], '"' + selected_phrases[counter] + '"', (0, 0, 0, 255), font = font)
+			counter += 1
 		
-		im.save('C:\\Users\\Matthew\\Documents\\Discord Bots\\Sheev Bot\\IdealGFTemp.png', 'PNG')
-		return await client.send_file(channel, 'C:\\Users\\Matthew\\Documents\\Discord Bots\\Sheev Bot\\IdealGFTemp.png')
+		im.save('IdealGFTemp.png', 'PNG')
+		return await client.send_file(channel, 'IdealGFTemp.png')
 		print("Generated an ideal GF meme")
 	except:
 		await client.say("Some stupid exception. It's possible there isn't a message that fits the criteria or I'm just bad at maths")
