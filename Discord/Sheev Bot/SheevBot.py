@@ -145,7 +145,7 @@ async def idealgf(ctx):
 #Meme Poster
 @client.command(pass_context=True)
 async def meme(ctx, choice="0") :
-	meme_subreddits = ["memes", "dankmemes", "prequelmemes", "sequelmemes", "meirl", "2003clonewarsmemes", "deepfriedmemes"]
+	meme_subreddits = ["memes", "dankmemes", "prequelmemes", "sequelmemes", "meirl", "2003clonewarsmemes", "deepfriedmemes", "surrealmemes", "okbuddyretard", "gocommitdie"]
 	if(choice == "0"):
 		subreddit = random.choice(meme_subreddits)
 	else:
@@ -159,9 +159,9 @@ async def meme(ctx, choice="0") :
 		if(post["data"]["url"][-4:] not in extensions and post["data"]["stickied"] is False):
 			continue
 		if(post["data"]["stickied"] is False):
-			await client.say("From /r/" + subreddit +":")
-			await client.say(post["data"]["title"])
-			await client.say(post["data"]["url"])
+			await client.say("From /r/" + subreddit + ":\n" + post["data"]["title"] + "\n" + post["data"]["url"])
+			#await client.say(post["data"]["title"])
+			#await client.say(post["data"]["url"])
 			print("Meme'd /r/" + subreddit)
 			break
 	
