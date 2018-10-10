@@ -8,6 +8,8 @@ import discord
 import time
 import random
 import youtube_dl
+import requests
+import json
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
@@ -95,7 +97,7 @@ async def stfu(ctx, user):
 #Send Sheev Face
 @client.command(pass_context=True)
 async def face(ctx):
-	return await client.send_file(ctx.message.channel, 'SheevFace.jpg')
+	await client.send_file(ctx.message.channel, 'SheevFace.jpg')
 	print('Displayed a glorious picture of The Senate')
 
 #Ideal GF
@@ -139,6 +141,30 @@ async def idealgf(ctx):
 		print("Generated an ideal GF meme")
 	except:
 		await client.say("Some stupid exception. It's possible there isn't a message that fits the criteria or I'm just bad at maths")
+
+#Meme Poster
+@client.command(pass_context=True)
+async def meme(ctx, choice="0") :
+	meme_subreddits = ["memes", "dankmemes", "prequelmemes", "sequelmemes", "meirl", "2003clonewarsmemes", "deepfriedmemes"]
+	if(choice == "0"):
+		subreddit = random.choice(meme_subreddits)
+	else:
+		subreddit = choice
+	request = requests.get("https://reddit.com/r/" + subreddit + "/hot.json", headers={"User-agent":"Sheev Bot v" + botversion})
+	sub_json = request.text
+	extensions = {".jpg", ".gif", ".png", ".mp4"}
+	input_json = json.loads(sub_json)
+	while(True):
+		post = random.choice(input_json["data"]["children"])
+		if(post["data"]["url"][-4:] not in extensions and post["data"]["stickied"] is False):
+			continue
+		if(post["data"]["stickied"] is False):
+			await client.say("From /r/" + subreddit +":")
+			await client.say(post["data"]["title"])
+			await client.say(post["data"]["url"])
+			print("Meme'd /r/" + subreddit)
+			break
+	
 
 @client.command(pass_context=True)
 async def boop(ctx):

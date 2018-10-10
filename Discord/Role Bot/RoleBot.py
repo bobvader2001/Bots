@@ -5,7 +5,7 @@ import youtube_dl
 from discord.ext.commands import Bot
 
 token = 'No u'
-client = Bot(command_prefix = "")
+client = Bot(command_prefix = "~")
 botversion = "0.1"
 
 roles = {"black":"364117952280395776", "blue":"364118187522129931", "yellow":"364118339649404938", "purple":"495628690751750144"}
